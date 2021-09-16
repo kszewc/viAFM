@@ -49,8 +49,11 @@ Z podanych zakresów atomów wybrane zostaną atomy CA i do nich zastosujemy opc
 Co dostaniemy?
 --------------------------------
 Program wygeneruje katalog Output zawierający pliki wejściowe, oraz podkatalogi odpowiadające każdemu z kierunków “ciągnięcia”. Każdy taki podkatalog zawiera odpowiednio spreparowany plik wejściowy do namd oraz skrypt bash służący do uruchomienia danej symulacji (na podstawie podanego template.run). Skrypty te uruchamiamy każdy z osobna:
- . Output/SMD_theta_0_phi_0/run.bash (“kropka” uruchomi skrypt tam gdzie jest plik run.bash)
+
+ _. Output/SMD_theta_0_phi_0/run.bash_ (“kropka” uruchomi skrypt tam gdzie jest plik run.bash)
+ 
 lub zbiorczo za pomocą skryptu master.run:
-./master.run
+
+_./master.run_
 
 Uruchomi to symulacje SMD.
