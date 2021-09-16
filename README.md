@@ -1,7 +1,8 @@
 # AntiCov
 AxCalc.py jest skryptem pythona pozwalającym na wygenerowanie całego zbioru inputów do Virtual AFM. Docelowo będzie uruchamiany automatycznie przez przeglądarkę, ale na razie trzeba go dokładnie przetestować.
 
-# Przed uruchomieniem
+Przed uruchomieniem
+--------------------------
 Skrypt napisany jest w standardzie Python3 (ogólnie obowiązujący). Wymaga jednak instalacji kilku dodatkowych pakietów pythona, nie zawartych w standardowej instalacji. Są to NumPy, SciPy, oraz MDAnalysis.
 Instalujemy je używając komendy pip:
 
