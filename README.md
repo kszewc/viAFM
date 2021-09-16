@@ -44,7 +44,7 @@ template.run    - A sample script to run the simulation on the computer you inte
  in SMD simulation. These are text variables, necessarily in quotation marks ''. The convention for atom selection is as in MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) i.e., 'protein and segid A B C' or 'protein and resid 1:55 66:128'. Unfortunately, there is no 'chain' selection, so you have to use 'segid' instead.
 CA atoms will be selected from the given ranges of atoms, and the constrain or pull option will be applied to them - this will produce an input file to SMD (SMD_constraints.pdb) containing the corresponding values in columns O and B.
 
-Co dostaniemy?
+The output
 --------------------------------
 The program will generate an Output directory containing the input files and subdirectories corresponding to the "pull" directions. Each subdirectory contains an appropriately prepared input file to NAMD, and a bash script to run the given simulation (based on the provided template.run). You can run these scripts each separately:
 
