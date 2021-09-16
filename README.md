@@ -1,59 +1,57 @@
-# AntiCov
-AxCalc.py jest skryptem pythona pozwalającym na wygenerowanie całego zbioru inputów do Virtual AFM. Docelowo będzie uruchamiany automatycznie przez przeglądarkę, ale na razie trzeba go dokładnie przetestować.
+# ANTICO
+AxCalc.py is a python script to generate a whole set of inputs to Virtual AFM. Ultimately, it will be run automatically by the browser, but it needs to be thoroughly tested for now.
 
-Przed uruchomieniem
+Before run...
 --------------------------
-Skrypt napisany jest w standardzie Python3 (ogólnie obowiązujący). Wymaga jednak instalacji kilku dodatkowych pakietów pythona, nie zawartych w standardowej instalacji. Są to NumPy, SciPy, oraz MDAnalysis.
-Instalujemy je używając komendy pip:
+The script is written in the Python 3 standard (generally applicable). However, it requires the installation of several additional Python packages not included in the standard installation. These are NumPy, SciPy, and MDAnalysis.
+Install them using the pip command:
 
  _pip install numpy scipy MDAnalysis_
 
-lub za pomocą conda:
+or using conda:
 
 _conda install numpy scipy MDAnalysis_
 
-Uruchamianie
+Runing
 ------------------------
-program uruchamiamy w terminalu (linux) wpisując w wierszu poleceń (będąc w katalogu w którym ściągnęliśmy skrypt):
+Run the program in terminal (Linux) by typing in the command line (being in the directory where you downloaded the script):
 
-_python AxCalc.py_  (lub python3 AxCalc.py  jeżeli python3 nie jest domyślną instancją pythona.) i w tej samej lini podajemy parametry wejściowe.
+_python AxCalc.py_  (lub python3 AxCalc.py  jeżeli python3 nie jest domyślną instancją pythona.) in the same line we added parameters.
 
-Program wywołujemy podając mu następujące parametry:
+We call the program by giving it the following parameters:
 
 _python AxCalc.py file.pdb file.psf file.vel file.coor file.xsc toppar.zip template.inp template.run ‘selection constraints’ ‘selection pull’_
 
-file.pdb        - struktura pdb naszego układu
+file.pdb        - the PDB structure of our system
 
-file.psf        - struktura psf układu
+file.psf        - the PSF file for our system
 
-file.vel        - informacja o prędkościach (zakładamy, że układ jest już po ekwilibracji)  
+file.vel        - velocity information- a restart file from NAMD equilibration simulation   
 
-file.coor    - informacja o aktualnych współrzędnych wszystkich atomów (j.w)
+file.coor    - current coordinates of all atoms in the system (also from the NAMDs equilibration)
 
 file.xsc        - contains the periodic cell parameters and extended system variables
 
-toppar.zip    - jeżeli mamy tylko jeden plik z parametrami Charmm to wpisujemy go tutaj
-  (np. param1.inp). Jeżeli jednak tych plików z parametrami jest więcej, trzeba 
-  włożyć je do folderu toppar i “zzipować” (zip -r toppar.zip toppar)
+toppar.zip    - if you have only one file with Charmm parameters, write it here
+  (e.g. param1.inp). However, if there are more parameter files, you have to 
+  put them into the toppar folder and "zip" it (_zip -r toppar.zip toppar_)
 
-template.inp    - tutaj mamy plik wejściowy do namd, w którym ustawiamy sobie wszystkie 
-  potrzebne nam parametry symulacji. Na podstawie tego pliku będą generowane poszczególne inputy do SMD więc ważne jest, by część opisująca SMD i więzów (SMD on … constraints yes itp.) była obecna.
+template.inp    - Here we have an input file to namd, in which we set all simulation parameters we need. Based on this file, the input to SMD will be generated, so it is important that the section describing SMD and constraints (SMD on ... constraints yes, etc.) is present.
 
-template.run    - przykładowy skrypt uruchamiający symulacje na komputerze na jakim 
-  zamierzacie liczyć - z podanym wierszem uruchamiającym namd. Pliki wejściowe i wyjściowe będą zdefiniowane jako INPF i OUTF więc tak należy je traktować w wierszu uruchamiającym namda (/home/kasia/NAMD/namd2 +p2 $INPF > $OUTF 2>&)
+template.run    - A sample script to run the simulation on the computer you intend to count - containing the namd running line. Input and output files will be defined as _INPF_ and _OUTF), so this is how they should be treated in the namd running line (_/home/user/NAMD/namd2 +p2 $INPF > $OUTF 2>&_)
 
-‘selection’    - wybór atomów zatrzymanych (‘selection constraints’) oraz ciągniętych 
- (‘selection pull’) w symulacji SMD. Jest to zmienna tekstowa, koniecznie w cudzysłowiu ‘’. Konwencja wyboru atomów jest taka jak w MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) czyli na przykład: ‘protein and segid A B C’  lub  ‘protein and resid 1:55 66:128’. Niestety nie ma ‘chain’ trzeba używać ‘segid’ zamiast tego.
-Z podanych zakresów atomów wybrane zostaną atomy CA i do nich zastosujemy opcję constrain lub pull - powstanie plik wejściowy do SMD (SMD_constraints.pdb) zawierający odpowiednie wartości w kolumnach O i B.
+‘selection’    - selections of constrained and pulled atoms 
+ in SMD simulation. These are text variables, necessarily in quotation marks ''. The convention for atom selection is as in MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) i.e., 'protein and segid A B C' or 'protein and resid 1:55 66:128'. Unfortunately, there is no 'chain' selection, so you have to use 'segid' instead.
+CA atoms will be selected from the given ranges of atoms, and the constrain or pull option will be applied to them - this will produce an input file to SMD (SMD_constraints.pdb) containing the corresponding values in columns O and B.
 
 Co dostaniemy?
 --------------------------------
-Program wygeneruje katalog Output zawierający pliki wejściowe, oraz podkatalogi odpowiadające każdemu z kierunków “ciągnięcia”. Każdy taki podkatalog zawiera odpowiednio spreparowany plik wejściowy do namd oraz skrypt bash służący do uruchomienia danej symulacji (na podstawie podanego template.run). Skrypty te uruchamiamy każdy z osobna:
+The program will generate an Output directory containing the input files and subdirectories corresponding to the "pull" directions. Each subdirectory contains an appropriately prepared input file to NAMD, and a bash script to run the given simulation (based on the provided template.run). You can run these scripts each separately:
 
- _. Output/SMD_theta_0_phi_0/run.bash_ (“kropka” uruchomi skrypt tam gdzie jest plik run.bash)
+ _. Output/SMD_theta_0_phi_0/run.bash_ (the "dot" will run the script exactly where the run.bash file is)
  
-lub zbiorczo za pomocą skryptu master.run:
+or together using the master.run script:
 
 _./master.run_
 
-Uruchomi to symulacje SMD.
+These will start the SMD simulation.
