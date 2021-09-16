@@ -1,7 +1,7 @@
 # AntiCov
 AxCalc.py jest skryptem pythona pozwalającym na wygenerowanie całego zbioru inputów do Virtual AFM. Docelowo będzie uruchamiany automatycznie przez przeglądarkę, ale na razie trzeba go dokładnie przetestować.
 
-<p1>Przed uruchomieniem<\p1>
+# Przed uruchomieniem
 Skrypt napisany jest w standardzie Python3 (ogólnie obowiązujący). Wymaga jednak instalacji kilku dodatkowych pakietów pythona, nie zawartych w standardowej instalacji. Są to NumPy, SciPy, oraz MDAnalysis.
 Instalujemy je używając komendy pip:
 
@@ -11,7 +11,7 @@ lub za pomocą conda:
 
 conda install numpy scipy MDAnalysis
 
-Uruchamianie
+# Uruchamianie
 program uruchamiamy w terminalu (linux) wpisując w wierszu poleceń (będąc w katalogu w którym ściągnęliśmy skrypt):
 python AxCalc.py  (lub python3 AxCalc.py  jeżeli python3 nie jest domyślną instancją pythona.)
 
@@ -34,7 +34,7 @@ template.run    - przykładowy skrypt uruchamiający symulacje na komputerze na 
  (‘selection pull’) w symulacji SMD. Jest to zmienna tekstowa, koniecznie w cudzysłowiu ‘’. Konwencja wyboru atomów jest taka jak w MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) czyli na przykład: ‘protein and segid A B C’  lub  ‘protein and resid 1:55 66:128’. Niestety nie ma ‘chain’ trzeba używać ‘segid’ zamiast tego.
 Z podanych zakresów atomów wybrane zostaną atomy CA i do nich zastosujemy opcję constrain lub pull - powstanie plik wejściowy do SMD (SMD_constraints.pdb) zawierający odpowiednie wartości w kolumnach O i B.
 
-Co dostaniemy?
+# Co dostaniemy?
 Program wygeneruje katalog Output zawierający pliki wejściowe, oraz podkatalogi odpowiadające każdemu z kierunków “ciągnięcia”. Każdy taki podkatalog zawiera odpowiednio spreparowany plik wejściowy do namd oraz skrypt bash służący do uruchomienia danej symulacji (na podstawie podanego template.run). Skrypty te uruchamiamy każdy z osobna:
  . Output/SMD_theta_0_phi_0/run.bash (“kropka” uruchomi skrypt tam gdzie jest plik run.bash)
 lub zbiorczo za pomocą skryptu master.run:
