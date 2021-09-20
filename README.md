@@ -16,7 +16,7 @@ Runing
 ------------------------
 Run the program in terminal (Linux) by typing in the command line (being in the directory where you downloaded the script):
 
-_python AxCalc.py_  (lub python3 AxCalc.py  jeżeli python3 nie jest domyślną instancją pythona.) in the same line we added parameters.
+_python AxCalc.py_  (or python3 AxCalc.py  if python3 is not the default python installation) in the same line we added parameters.
 
 We call the program by giving it the following parameters:
 
