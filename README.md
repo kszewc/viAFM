@@ -41,8 +41,8 @@ template.inp    - Here we have an input file to namd, in which we set all simula
 template.run    - A sample script to run the simulation on the computer you intend to count - containing the namd running line. Input and output files will be defined as _INPF_ and _OUTF), so this is how they should be treated in the namd running line (_/home/user/NAMD/namd2 +p2 $INPF > $OUTF 2>&_)
 
 ‘selection’    - selections of constrained and pulled atoms 
- in SMD simulation. These are text variables, necessarily in quotation marks ''. The convention for atom selection is as in MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) i.e., 'protein and segid A B C' or 'protein and resid 1:55 66:128'. Unfortunately, there is no 'chain' selection, so you have to use 'segid' instead.
-CA atoms will be selected from the given ranges of atoms, and the constrain or pull option will be applied to them - this will produce an input file to SMD (SMD_constraints.pdb) containing the corresponding values in columns O and B.
+ in SMD simulation. These are text variables, necessarily in quotation marks ''. The convention for atom selection is as in MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) i.e., 'name CA and protein and segid A B C' or 'name CA and resid 1:55 66:128', or 'name CA and resname PRO ALA NBD'. Unfortunately, there is no 'chain' selection, so you have to use 'segid' instead.
+It is recommended to restrain only CA atoms. The script produces an input file to SMD (SMD_constraints.pdb) containing the corresponding values in columns O and B.
 
 The output
 --------------------------------
