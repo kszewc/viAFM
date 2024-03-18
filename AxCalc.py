@@ -180,8 +180,8 @@ def Gen_run(name,label,template):
             if len(line.split())>1 and line.split()[1] == '-J': line_new = line.split()[0] + ' ' + line.split()[1] +' SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'\n'
             
             if len(line.split())>1 and line.split()[1][0:4] == 'INPF': line_new = 'set INPF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/mdrun.inp'+'\n'
-            if line[0:4] == 'INPF': line_new = 'INPF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/mdrun.inp'+'\n'
-            if line[0:4] == 'OUTF': line_new = 'OUTF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/mdrun.log'+'\n'
+            if line[0:4] == 'INPF': line_new = 'INPF=mdrun.inp'+'\n'
+            if line[0:4] == 'OUTF': line_new = 'OUTF=mdrun.log'+'\n'
 
             if len(line.split())>1 and line.split()[1][0:4] == 'OUTF': line_new = 'set OUTF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/mdrun.log'+'\n'
             new_f.write(line_new)
