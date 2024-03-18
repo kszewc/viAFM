@@ -36,9 +36,9 @@ toppar.zip    - if you have only one file with Charmm parameters, write it here
   (e.g. param1.inp). However, if there are more parameter files, you have to 
   put them into the toppar folder and "zip" it (_zip -r toppar.zip toppar_)
 
-template.inp    - Here we have an input file to namd, in which we set all simulation parameters we need. Based on this file, the input to SMD will be generated, so it is important that the section describing SMD and constraints (SMD on ... constraints yes, etc.) is present.
+template.inp    - Here we have an input file to namd, in which we set all simulation parameters we need. Based on this file, the input to SMD will be generated, so it is important that the section describing SMD and constraints (SMD on ... constraints yes, etc.) is present. The exemplary input file can be found in the TEST.zip folder.
 
-template.run    - A sample script to run the simulation on the computer you intend to count - containing the namd running line. Input and output files will be defined as _INPF_ and _OUTF), so this is how they should be treated in the namd running line (_/home/user/NAMD/namd2 +p2 $INPF > $OUTF 2>&_)
+template.run    - A sample script to run the simulation on the computer you intend to count - containing the namd running line. Input and output files will be defined as _INPF_ and _OUTF), so this is how they should be treated in the namd running line (_/home/user/NAMD/namd2 +p2 $INPF > $OUTF 2>&_). The exemplary template.run file can be found in TEST.zip.
 
 ‘selection’    - selections of constrained and pulled atoms 
  in SMD simulation. These are text variables, necessarily in quotation marks ''. The convention for atom selection is as in MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) i.e., 'name CA and protein and segid A B C' or 'name CA and resid 1:55 66:128', or 'name CA and resname PRO ALA NBD'. Unfortunately, there is no 'chain' selection, so you have to use 'segid' instead.
