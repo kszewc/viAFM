@@ -55,7 +55,7 @@ for dir in list_of_dirs:
         # Hydrogen bonds number vs time
         psf = [file for file in os.listdir(name) if file[-3:] == 'psf']
         print('Hydrogen bonds calculating - that may take some time...')
-        u = Universe(name+'/'+psf[0] ,name+'/'+dir+'/smd.dcd')
+        u = Universe(name+'/'+psf[0] ,name+'/'+dir+'/md.dcd')
         hbonds = HBA(universe=u,hydrogens_sel="protein and name H*",donors_sel=sel_const,acceptors_sel=sel_pull)
         hbonds.run()
         out = hbonds.count_by_time()
