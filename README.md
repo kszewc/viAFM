@@ -63,7 +63,9 @@ Analysing the output
 ---------------------------------
 The Analysis.py script facilitates analyzing SMD simulation results. It iterates through subdirectories in the Output directory and extracts SMD information from mdrun.log files. Additionally, it checks the corresponding dcd files and calculates the number of hydrogen bonds formed between a given protein selection for each simulation.
 The program can be called using the following parameters:
+
 _python Analysis.py Output 'selection 1' 'selection 2'_
+
 where Output is the directory with SMD data, selection 1 is the constrained part of our system, and selection 2 is the pulled part of our system. 
 
 
