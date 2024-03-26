@@ -1,9 +1,10 @@
-# ANTICO
-AxCalc.py is a python script to generate a whole set of inputs to Virtual AFM. Ultimately, it will be run automatically by the browser, but it needs to be thoroughly tested for now.
+# vAFM
+vAFM.py is a python script to generate a whole set of inputs to Virtual Atomic Force Microscopy. In other words, it automates the preparation of inputs for multi-directional Steered Molecular Dynamics simulations. Ultimately, it will be run automatically by the browser.
 
 Before run...
 --------------------------
 The script is written in the Python 3 standard (generally applicable). However, it requires the installation of several additional Python packages not included in the standard installation. These are NumPy, SciPy, and MDAnalysis.
+
 Install them using the pip command:
 
  _pip install numpy scipy MDAnalysis_
@@ -16,11 +17,11 @@ Runing
 ------------------------
 Run the program in terminal (Linux) by typing in the command line (being in the directory where you downloaded the script):
 
-_python AxCalc.py_  (or python3 AxCalc.py  if python3 is not the default python installation) in the same line we added parameters.
+_python vAFM.py_  (or python3 vAFM.py  if python3 is not the default python installation) in the same line we added parameters.
 
 We call the program by giving it the following parameters:
 
-_python AxCalc.py file.pdb file.psf file.vel file.coor file.xsc toppar.zip template.inp template.run ‘selection constraints’ ‘selection pull’_
+_python vAFM.py file.pdb file.psf file.vel file.coor file.xsc toppar.zip template.inp template.run ‘selection constraints’ ‘selection pull’_
 
 file.pdb        - the PDB structure of our system
 
@@ -36,13 +37,13 @@ toppar.zip    - if you have only one file with Charmm parameters, write it here
   (e.g. param1.inp). However, if there are more parameter files, you have to 
   put them into the toppar folder and "zip" it (_zip -r toppar.zip toppar_)
 
-template.inp    - Here we have an input file to namd, in which we set all simulation parameters we need. Based on this file, the input to SMD will be generated, so it is important that the section describing SMD and constraints (SMD on ... constraints yes, etc.) is present. The exemplary input file can be found in the TEST.zip folder. To avoid possible artifacts, please make sure that SMD simulations are performed in the NVT ensemble (the pressure control should be set off).
+template.inp    - Here we have an input file to namd, in which we set all simulation parameters we need. Based on this file, the input to SMD will be generated, so __it is important that the section describing SMD and constraints (SMD on ... constraints yes, etc.) is present.__ The exemplary input file can be found in the TEST.zip folder. __To avoid possible artifacts, please make sure that SMD simulations are performed in the NVT ensemble__ (the pressure control should be set off).
 
 template.run    - A sample script to run the simulation on the computer you intend to count - containing the namd running line. Input and output files will be defined as _INPF_ and _OUTF), so this is how they should be treated in the namd running line (_/home/user/NAMD/namd2 +p2 $INPF > $OUTF 2>&_). The exemplary template.run file can be found in TEST.zip.
 
 ‘selection’    - selections of constrained and pulled atoms 
  in SMD simulation. These are text variables, necessarily in quotation marks ''. The convention for atom selection is as in MDAnalysis (https://docs.mdanalysis.org/1.1.0/documentation_pages/selections.html) i.e., 'name CA and protein and segid A B C' or 'name CA and resid 1:55 66:128', or 'name CA and resname PRO ALA NBD'. Unfortunately, there is no 'chain' selection, so you have to use 'segid' instead.
-It is recommended to restrain only CA atoms. The script produces an input file to SMD (SMD_constraints.pdb) containing the corresponding values in columns O and B.
+It is recommended to restrain only CA atoms. The script produces an input file to Steered Molecular Dynamics (SMD_constraints.pdb) indicating which part should be restarined and which part will be pulled by changing values in columns O and B. The default mode of SMD simulation in here is constant Velocity SMD, which means that the pulling force will be adjusted to provide a constant velocity in the direction of pulling.
 
 The output
 --------------------------------
@@ -54,7 +55,7 @@ or together using the master.run script:
 
 _./master.run_
 
-These will start the SMD simulation.
+These will start the SMD simulation. The defoult 
 
 For visualisation purposes, the program generates a tcl script for VMD (_vmd_script.tcl_), which draw the bunch of vectors 
 representing the directions of pulling. 
