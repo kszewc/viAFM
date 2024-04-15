@@ -79,7 +79,7 @@ def Hedgehog(pdb,fix_selection,pull_selection):
     #translation of the anchor of the cone to the center of mass od the pulled protein is not neccessary because 
     # NAMD is doing it automatically.
 
-    return hedgehog, labels, pull_COM #set of vectors [N][x,y,z]; set of angles [N][theta,phi], the anchor point [x,y,z]
+    return hedgehog, labels, pull_COM #set of vectors [N][x,y,z]; set of angles [N][theta,phi], the pulling point [x,y,z]
 
 ##############################################################################################
 #
