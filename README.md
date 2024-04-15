@@ -1,5 +1,5 @@
-# vAFM
-vAFM.py is a python script to generate a whole set of inputs to Virtual Atomic Force Microscopy. In other words, it automates the preparation of inputs for multi-directional Steered Molecular Dynamics simulations. Ultimately, it will be run automatically by the browser.
+# viAFM
+viAFM.py is a python script to generate a whole set of inputs to Virtual Atomic Force Microscopy. In other words, it automates the preparation of inputs for multi-directional Steered Molecular Dynamics simulations. Ultimately, it will be run automatically by the browser.
 
 Before run...
 --------------------------
@@ -17,11 +17,11 @@ Runing
 ------------------------
 Run the program in terminal (Linux) by typing in the command line (being in the directory where you downloaded the script):
 
-_python vAFM.py_  (or python3 vAFM.py  if python3 is not the default python installation) in the same line we added parameters.
+_python viAFM.py_  (or python3 viAFM.py  if python3 is not the default python installation) in the same line we added parameters.
 
 We call the program by giving it the following parameters:
 
-_python vAFM.py file.pdb file.psf file.vel file.coor file.xsc toppar.zip template.inp template.run ‘selection constraints’ ‘selection pull’_
+_python viAFM.py file.pdb file.psf file.vel file.coor file.xsc toppar.zip template.inp template.run ‘selection constraints’ ‘selection pull’_
 
 file.pdb        - the PDB structure of our system
 
