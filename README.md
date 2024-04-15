@@ -57,7 +57,7 @@ or together using the master.run script:
 
 _./master.run_
 
-These will start the SMD simulation. The defoult 
+These will start the SMD simulation. The default 
 
 For visualisation purposes, the program generates a tcl script for VMD (_vmd_script.tcl_), which draw the bunch of vectors 
 representing the directions of pulling. 
