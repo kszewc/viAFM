@@ -39,6 +39,8 @@ template_run = str(sys.argv[8]) #'../CUT/template.run'
 input_sel1= sys.argv[9] #'protein and segid PROA PROB PROC'  # constrained atoms in SMD
 input_sel2= sys.argv[10] #'protein and segid PROD'  # pulled atoms in SMD
 
+n_repeats = int(sys.argv[11]) # number of simulation repeats for each pulling direction
+
 ###########################################################################################
 #
 #   End of parameters setup, do not change unless you know what you are doing ;)
@@ -131,31 +133,32 @@ def Gen_input(name,pdb,psf,vectors,template,sel1,sel2,par1,coor=None,vel=None,xs
 
         # Modyfying the template.inp file for each SMD run (the only difference between them is the direction of pulling)
         f = open(template,'r')
-        new_f= open(str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/mdrun.inp','w')
+        for n in range(0,n_repeats):
+                new_f= open(f'{name}/SMD_theta_{int(l[0])}_phi_{int(l[1])}/mdrun{n}.inp','w')  # several repearts of simulation is produced
 
-        # changing information about the structure and parameters
-        new_f.write('structure	../'+str(psf.split('/')[-1])+'\n')
-        new_f.write('coordinates	../'+str(pdb.split('/')[-1])+'\n')
-        if coor: new_f.write('bincoordinates	../'+str(coor.split('/')[-1])+'\n')
-        if vel: new_f.write('binvelocities	../'+str(vel.split('/')[-1])+'\n')
-        if xsc: new_f.write('extendedSystem	../'+str(xsc.split('/')[-1])+'\n')
-        new_f.write('paratypecharmm	on\n')
-        if par1[-10:] =='toppar.zip':
-            for filename in os.listdir(str(name)+'/toppar'):
-                new_f.write('parameters	../toppar/'+str(filename)+'\n')
-        if par1[-10:]!='toppar.zip':
-            new_f.write('parameters ../'+str(par1.split('/')[-1])+'\n')
+                # changing information about the structure and parameters
+                new_f.write('structure	../'+str(psf.split('/')[-1])+'\n')
+                new_f.write('coordinates	../'+str(pdb.split('/')[-1])+'\n')
+                if coor: new_f.write('bincoordinates	../'+str(coor.split('/')[-1])+'\n')
+                if vel: new_f.write('binvelocities	../'+str(vel.split('/')[-1])+'\n')
+                if xsc: new_f.write('extendedSystem	../'+str(xsc.split('/')[-1])+'\n')
+                new_f.write('paratypecharmm	on\n')
+                if par1[-10:] =='toppar.zip':
+                    for filename in os.listdir(str(name)+'/toppar'):
+                        new_f.write('parameters	../toppar/'+str(filename)+'\n')
+                if par1[-10:]!='toppar.zip':
+                    new_f.write('parameters ../'+str(par1.split('/')[-1])+'\n')
 
-        for line in f.readlines():
-            if line[0:7].lower() != 'structu' and line[0:7].lower() != 'coordin' and line[0:7].lower() != 'bincoor' and line[0:7].lower() != 'binvelo' and line[0:7].lower() != 'extende' and line[0:7].lower() != 'paramet' and line[0:7].lower() != 'paratyp':
-              line_new = line
-              if line[0:10] == 'outputname': line_new = 'outputname      md'+'\n'
-              if line[0:7] == 'SMDfile': line_new = 'SMDfile ../SMD_constraints.pdb'+'\n' #The files common for each SMD_run are stored in the output directory
-              if line[0:6] == 'SMDDir': line_new = 'SMDDir	'+str(v[0])+' '+str(v[1])+' '+str(v[2])+'\n'
-              if line[0:7] == 'consref': line_new = 'consref ../SMD_constraints.pdb'+'\n'
-              if line[0:10] == 'conskfile ': line_new = 'conskfile ../SMD_constraints.pdb'+'\n'
-              new_f.write(line_new)
-        new_f.close()
+                for line in f.readlines():
+                    if line[0:7].lower() != 'structu' and line[0:7].lower() != 'coordin' and line[0:7].lower() != 'bincoor' and line[0:7].lower() != 'binvelo' and line[0:7].lower() != 'extende' and line[0:7].lower() != 'paramet' and line[0:7].lower() != 'paratyp':
+                      line_new = line
+                      if line[0:10] == 'outputname': line_new = f'outputname      md{n}\n'
+                      if line[0:7] == 'SMDfile': line_new = 'SMDfile ../SMD_constraints.pdb'+'\n' #The files common for each SMD_run are stored in the output directory
+                      if line[0:6] == 'SMDDir': line_new = 'SMDDir	'+str(v[0])+' '+str(v[1])+' '+str(v[2])+'\n'
+                      if line[0:7] == 'consref': line_new = 'consref ../SMD_constraints.pdb'+'\n'
+                      if line[0:10] == 'conskfile ': line_new = 'conskfile ../SMD_constraints.pdb'+'\n'
+                      new_f.write(line_new)
+                new_f.close()
         f.close()
 
 ##############################################################################################
@@ -174,26 +177,28 @@ def Gen_run(name,label,template):
     for l in label:
         # Generating run.bash files
         f = open(template,'r')
-        new_f= open(str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/run.bash','w')
-        for line in f.readlines():
-            line_new = line
-            if len(line.split())>1 and line.split()[1] == '-J': line_new = line.split()[0] + ' ' + line.split()[1] +' SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'\n'
-            
-            if len(line.split())>1 and line.split()[1][0:4] == 'INPF': line_new = 'set INPF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/mdrun.inp'+'\n'
-            if line[0:4] == 'INPF': line_new = 'INPF=mdrun.inp'+'\n'
-            if line[0:4] == 'OUTF': line_new = 'OUTF=mdrun.log'+'\n'
+        for n in range(0,n_repeats):
+                new_f= open(str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash','w')
+                for line in f.readlines():
+                    line_new = line
+                    if len(line.split())>1 and line.split()[1] == '-J': line_new = line.split()[0] + ' ' + line.split()[1] +' SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'\n'
+                    
+                    if len(line.split())>1 and line.split()[1][0:4] == 'INPF': line_new = 'set INPF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/mdrun{n}.inp'+'\n'
+                    if line[0:4] == 'INPF': line_new = f'INPF=mdrun{n}.inp'+'\n'
+                    if line[0:4] == 'OUTF': line_new = f'OUTF=mdrun{n}.log'+'\n'
 
-            if len(line.split())>1 and line.split()[1][0:4] == 'OUTF': line_new = 'set OUTF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/mdrun.log'+'\n'
-            new_f.write(line_new)
-        #print('qsub '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/run.bash')
-        new_f.close()
+                    if len(line.split())>1 and line.split()[1][0:4] == 'OUTF': line_new = 'set OUTF=SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/mdrun{n}.log'+'\n'
+                    new_f.write(line_new)
+                #print('qsub '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash')
+                new_f.close()
+        
+
+                # Runing the simulations
+                os.system('chmod +x '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash')
+                #print('Running simulation for SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1])))
+                #os.system('. '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash &') # If you are using this script on a supercomputer, all jobs can run simultanously 
+                master_file.write('. SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash\n') # On a single gpu station, it could be better to run one job after one (the line without & at the end so the next job is waiting for the one to finish)
         f.close()
-
-        # Runing the simulations
-        os.system('chmod +x '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/run.bash')
-        #print('Running simulation for SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1])))
-        #os.system('. '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/run.bash &') # If you are using this script on a supercomputer, all jobs can run simultanously 
-        master_file.write('. SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+'/run.bash\n') # On a single gpu station, it could be better to run one job after one (the line without & at the end so the next job is waiting for the one to finish)
     master_file.close()
     os.system('chmod +x '+str(name)+'/master.run')
         
@@ -225,4 +230,3 @@ Gen_input(dirname, input_pdb, input_psf, hedgehog, template_inp, input_sel1, inp
 Gen_run(dirname, hedgehog[1], template_run)
 Gen_vmd_script(dirname, hedgehog[0], hedgehog[2])
 print('Generation of SMD input finished!')
-
