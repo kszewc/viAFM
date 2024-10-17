@@ -36,8 +36,8 @@ template_inp = str(sys.argv[7]) #'../CUT/template.inp'
 template_run = str(sys.argv[8]) #'../CUT/template.run'
 
 #Selection parameters for SMD (see MDAnalysis page for more information about selection keywords)
-input_sel1= sys.argv[9] #'protein and segid PROA PROB PROC'  # constrained atoms in SMD
-input_sel2= sys.argv[10] #'protein and segid PROD'  # pulled atoms in SMD
+input_sel1= sys.argv[9] #'name CA and segid PROA PROB PROC'  # constrained atoms in SMD
+input_sel2= sys.argv[10] #'name CA and segid PROD'  # pulled atoms in SMD
 
 n_repeats = int(sys.argv[11]) # number of simulation repeats for each pulling direction
 
