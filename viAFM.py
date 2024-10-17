@@ -132,8 +132,9 @@ def Gen_input(name,pdb,psf,vectors,template,sel1,sel2,par1,coor=None,vel=None,xs
         os.system('mkdir '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1])))
 
         # Modyfying the template.inp file for each SMD run (the only difference between them is the direction of pulling)
-        f = open(template,'r')
+        
         for n in range(0,n_repeats):
+                f = open(template,'r')
                 new_f= open(f'{name}/SMD_theta_{int(l[0])}_phi_{int(l[1])}/mdrun{n}.inp','w')  # several repearts of simulation is produced
 
                 # changing information about the structure and parameters
@@ -159,7 +160,7 @@ def Gen_input(name,pdb,psf,vectors,template,sel1,sel2,par1,coor=None,vel=None,xs
                       if line[0:10] == 'conskfile ': line_new = 'conskfile ../SMD_constraints.pdb'+'\n'
                       new_f.write(line_new)
                 new_f.close()
-        f.close()
+                f.close()
 
 ##############################################################################################
 #
@@ -176,8 +177,9 @@ def Gen_run(name,label,template):
     master_file = open(str(name)+'/master.run','w')
     for l in label:
         # Generating run.bash files
-        f = open(template,'r')
+        
         for n in range(0,n_repeats):
+                f = open(template,'r')
                 new_f= open(str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash','w')
                 for line in f.readlines():
                     line_new = line
@@ -198,7 +200,7 @@ def Gen_run(name,label,template):
                 #print('Running simulation for SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1])))
                 #os.system('. '+str(name)+'/SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash &') # If you are using this script on a supercomputer, all jobs can run simultanously 
                 master_file.write('. SMD_theta_'+str(int(l[0]))+'_phi_'+str(int(l[1]))+f'/run{n}.bash\n') # On a single gpu station, it could be better to run one job after one (the line without & at the end so the next job is waiting for the one to finish)
-        f.close()
+                f.close()
     master_file.close()
     os.system('chmod +x '+str(name)+'/master.run')
         
